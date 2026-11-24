@@ -21,8 +21,8 @@ SQL Server, SSMS
 - Used median vs mean for turnaround time analysis 
 
 ## Key findings
-Total requests received, total processed and total sent back : a total of 7569 requests were received by the unit in 2023 and out of these 7475 were processed and 94 were sent back 
-| Sent back | ~1.2% overall |
+1. A total of 7569 requests were received by the unit in 2023 and out of these 98.76% (7475) were processed and 1.24% (94) were sent back 
+2. 
 | Highest sent-back rates | Complaints and investigation products (~9–10%) vs. ~1% for standard salary products |
 | Corporate vs. branch | *fill in* |
 | Median turnaround | *fill in* |
