@@ -1,0 +1,77 @@
+-- Total requests received vs processed vs sent back
+SELECT COUNT(*) AS received,
+       SUM(CASE WHEN S_BACK = 'N' THEN 1 ELSE 0 END) AS processed, -- When requests are not sent back they have been processed
+       SUM(CASE WHEN S_BACK = 'Y' THEN 1 ELSE 0 END) AS sent_back
+FROM dbo.dept_transactions;
+
+-- Sent back per product 
+SELECT PRODUCT,
+       COUNT(*) AS total_requests,
+       SUM(CASE WHEN S_BACK = 'Y' THEN 1 ELSE 0 END) AS total_sent_back,
+       CAST(100.0 * SUM(CASE WHEN S_BACK = 'Y' THEN 1 ELSE 0 END)
+            / SUM(SUM(CASE WHEN S_BACK = 'Y' THEN 1 ELSE 0 END)) OVER ()
+            AS DECIMAL(5,2)) AS pct_of_all_sent_back
+FROM dbo.dept_transactions
+GROUP BY PRODUCT
+ORDER BY total_sent_back DESC
+
+-- Requests processed per month
+SELECT
+    DATENAME(MONTH, PROCESSED_ON) AS month,
+    COUNT(*) AS total_processed,
+    CAST(100.0 * COUNT(*) / SUM(COUNT(*)) OVER () AS DECIMAL(5,2)) AS pct_of_total
+FROM dbo.dept_transactions
+WHERE PROCESSED_ON IS NOT NULL
+GROUP BY YEAR(PROCESSED_ON), MONTH(PROCESSED_ON), DATENAME(MONTH, PROCESSED_ON)
+ORDER BY YEAR(PROCESSED_ON), MONTH(PROCESSED_ON)
+
+-- Corporate vs branch requests
+SELECT
+    SUM(CASE WHEN REQ_BRANCH = 'CORPORATE' THEN 1 ELSE 0 END) AS corporate_requests,
+    SUM(CASE WHEN REQ_BRANCH != 'CORPORATE' THEN 1 ELSE 0 END) AS branch_requests
+FROM dbo.dept_transactions
+
+-- Transactions per employee (masked)
+SELECT PROC_BY_NAME AS Employee, COUNT(*) AS transactions_processed
+FROM dbo.dept_transactions_masked
+GROUP BY PROC_BY_NAME
+ORDER BY transactions_processed DESC
+
+-- Corporate vs branch per employee (masked)
+SELECT PROC_BY_NAME AS Employee,
+       SUM(CASE WHEN REQ_BRANCH = 'CORPORATE' THEN 1 ELSE 0 END) AS corporate_requests,
+       SUM(CASE WHEN REQ_BRANCH <> 'CORPORATE' THEN 1 ELSE 0 END) AS branch_requests
+FROM dbo.dept_transactions_masked
+GROUP BY PROC_BY_NAME
+ORDER BY PROC_BY_NAME
+
+-- TURNAROUND TIME 
+-- Total turn around time (Median vs Mean)
+SELECT DISTINCT
+    COUNT(*) OVER () AS requests,
+    CAST(PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY DATEDIFF(MINUTE, CREATED_ON, PROCESSED_ON) / 60.0)
+         OVER () AS DECIMAL(10,2)) AS median_hours,
+    CAST(AVG(DATEDIFF(MINUTE, CREATED_ON, PROCESSED_ON) / 60.0) OVER () AS DECIMAL(10,2)) AS mean_hours
+FROM dbo.dept_transactions
+
+-- Turn around time per product
+SELECT DISTINCT
+    PRODUCT,
+    COUNT(*) OVER (PARTITION BY PRODUCT) AS requests,
+    CAST(PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY DATEDIFF(MINUTE, CREATED_ON, PROCESSED_ON) / 60.0)
+         OVER (PARTITION BY PRODUCT) AS DECIMAL(10,2)) AS median_hours,
+    CAST(AVG(DATEDIFF(MINUTE, CREATED_ON, PROCESSED_ON) / 60.0)
+         OVER (PARTITION BY PRODUCT) AS DECIMAL(10,2)) AS mean_hours
+FROM dbo.dept_transactions_masked
+ORDER BY median_hours DESC
+
+-- Turn around time per employee (masked)
+SELECT DISTINCT
+    PROC_BY_NAME AS Employee,
+    COUNT(*) OVER (PARTITION BY PROC_BY_NAME) AS requests,
+    CAST(PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY DATEDIFF(MINUTE, CREATED_ON, PROCESSED_ON) / 60.0)
+         OVER (PARTITION BY PROC_BY_NAME) AS DECIMAL(10,2)) AS median_hours,
+    CAST(AVG(DATEDIFF(MINUTE, CREATED_ON, PROCESSED_ON) / 60.0)
+         OVER (PARTITION BY PROC_BY_NAME) AS DECIMAL(10,2)) AS mean_hours
+FROM dbo.dept_transactions_masked
+ORDER BY median_hours DESC
