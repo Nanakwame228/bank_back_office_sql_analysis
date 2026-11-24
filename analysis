@@ -1,8 +1,11 @@
 -- Total requests received vs processed vs sent back
-SELECT COUNT(*) AS received,
-       SUM(CASE WHEN S_BACK = 'N' THEN 1 ELSE 0 END) AS processed, -- When requests are not sent back they have been processed
-       SUM(CASE WHEN S_BACK = 'Y' THEN 1 ELSE 0 END) AS sent_back
-FROM dbo.dept_transactions;
+SELECT
+    COUNT(*) AS received,
+    SUM(CASE WHEN S_BACK = 'N' THEN 1 ELSE 0 END) AS processed,
+	CAST(100.0 * SUM(CASE WHEN S_BACK = 'N' THEN 1 ELSE 0 END) / COUNT(*) AS DECIMAL(5,2)) AS processed_pct,
+    SUM(CASE WHEN S_BACK = 'Y' THEN 1 ELSE 0 END) AS sent_back,
+    CAST(100.0 * SUM(CASE WHEN S_BACK = 'Y' THEN 1 ELSE 0 END) / COUNT(*) AS DECIMAL(5,2)) AS sent_back_pct
+FROM dbo.dept_transactions
 
 -- Sent back per product 
 SELECT PRODUCT,
