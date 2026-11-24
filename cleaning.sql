@@ -1,0 +1,42 @@
+UPDATE dbo.dept_transactions
+SET REQUEST_ID   = UPPER(LTRIM(RTRIM(REQUEST_ID))),
+    PRODUCT      = UPPER(LTRIM(RTRIM(PRODUCT))),
+    CREATOR_ID   = UPPER(LTRIM(RTRIM(CREATOR_ID))),
+    CREATOR_NAME = UPPER(LTRIM(RTRIM(CREATOR_NAME))),
+    PROC_BY_ID   = UPPER(LTRIM(RTRIM(PROC_BY_ID))),
+    PROC_BY_NAME = UPPER(LTRIM(RTRIM(PROC_BY_NAME))),
+    REQ_BRANCH   = UPPER(LTRIM(RTRIM(REQ_BRANCH))),
+    STATUS       = UPPER(LTRIM(RTRIM(STATUS))),
+    S_BACK       = UPPER(LTRIM(RTRIM(S_BACK))),
+    TOT_MANHOURS = LTRIM(RTRIM(TOT_MANHOURS)),
+    CBO_MANHOURS = LTRIM(RTRIM(CBO_MANHOURS))
+GO
+
+-- 3. MASKED VIEW (used for employee analysis)
+DROP VIEW IF EXISTS dbo.dept_transactions_masked
+GO
+
+CREATE VIEW dbo.dept_transactions_masked AS
+SELECT
+    REQUEST_ID,
+    PRODUCT,
+    'Employee' + CAST(DENSE_RANK() OVER (ORDER BY PROC_BY_NAME) AS VARCHAR(3)) AS PROC_BY_NAME,
+    REQ_BRANCH,
+    STATUS,
+    CREATED_ON,
+    PROCESSED_ON,
+    TOT_MANHOURS,
+    S_BACK,
+    CBO_MANHOURS
+FROM dbo.dept_transactions;
+GO
+
+-- 4. CHECK FOR DUPLICATED VALUES
+SELECT COUNT(*) AS total_rows,
+       COUNT(DISTINCT REQUEST_ID) AS unique_requests
+FROM dbo.dept_transactions;
+
+-- Pending or missing data
+SELECT COUNT(*) AS pending_or_missing_processed_data
+FROM dbo.dept_transactions
+WHERE PROCESSED_ON IS NULL
