@@ -28,11 +28,11 @@ SQL Server, SSMS
 2. Out of all requests that were sent back internal salary requests had the most send backs with 40.43%
 3. December received the most requests and this was due to companies paying Christmas and 13th month bonuses
 4. Total request received from the corporate team was 2593 and total received from branches were 4976
-5. Employee 1 and employee 5 contributed to 49.1% of total transactions processed in 2023 out of 6 employees
-6. Per my analysis employee 5 processed 55.92% of all corporate transactions in 2023. Transactions from Corporate entails more as employees have to transfer funds from the corporate account to the salary payment account and send the transaction for validation however this process is done by the branches before the request is presented.
+5. Two employees contributed to 49.1% of total transactions processed in 2023 out of 6 employees
+6. One employee processed 55.92% of all corporate transactions in 2023. Transactions from Corporate entails more as employees have to transfer funds from the corporate account to the salary payment account and send the transaction for validation however this process is done by the branches before the request is presented.
 7. The median turn around time was 2.55 hours, I used to median because it is resilient to outliers which can be seen in this data, the mean turn around time is 7.06 hours and this is as a result of a few transactions which delayed due to some abnormal circumstances.
-8. Turn around time for majority of the products were centered around the median value with the exception of a few product which upon further investigation was reveled that employees simply did not like working on those products so it took longer to complete those requests.
-9. Employee 2 had a turnaround time of almost an hour below the turn around time, all the others were slightly above the median turn around time with Employee 6 and 3 having 3.03 hours and 3.09 hours respectively, which were the highest in the unit. 
+8. Turn around time for majority of the products were centered around the median value with the exception of a few product which could possibly be because there were extra steps involved. 
+9. An employee had a turnaround time of almost an hour below the turn around time, all the others were slightly above the median turn around time with 2 employees having turn around time above 3 hours, which were the highest in the unit. 
 
 ## Limitations
 Turnaround is measured in elapsed hours and includes weekends, nights and public holidays
