@@ -28,6 +28,7 @@ SQL Server, SSMS
 3. December received the most requests and this was due to companies paying Christmas and 13th month bonuses
 4. Total request received from the corporate team was 2593 and total received from branches were 4976
 5. Employee 1 and employee 5 contributed to 49.1% of total transactions processed in 2023 out of 6 employees
+6. 
 | Highest sent-back rates | Complaints and investigation products (~9–10%) vs. ~1% for standard salary products |
 | Corporate vs. branch | *fill in* |
 | Median turnaround | *fill in* |
