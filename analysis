@@ -42,11 +42,20 @@ GROUP BY PROC_BY_NAME
 ORDER BY transactions_processed DESC
 
 -- Corporate vs branch per employee (masked)
-SELECT PROC_BY_NAME AS Employee,
-       SUM(CASE WHEN REQ_BRANCH = 'CORPORATE' THEN 1 ELSE 0 END) AS corporate_requests,
-       SUM(CASE WHEN REQ_BRANCH <> 'CORPORATE' THEN 1 ELSE 0 END) AS branch_requests
-FROM dbo.dept_transactions_masked
-GROUP BY PROC_BY_NAME
+SELECT
+    PROC_BY_NAME AS employee,
+    corporate_requests,
+    CAST(100.0 * corporate_requests / SUM(corporate_requests) OVER () AS DECIMAL(5,2)) AS corporate_pct,
+    branch_requests,
+    CAST(100.0 * branch_requests / SUM(branch_requests) OVER () AS DECIMAL(5,2)) AS branch_pct
+FROM (
+    SELECT
+        PROC_BY_NAME,
+        SUM(CASE WHEN REQ_BRANCH = 'CORPORATE' THEN 1 ELSE 0 END) AS corporate_requests,
+        SUM(CASE WHEN REQ_BRANCH <> 'CORPORATE' THEN 1 ELSE 0 END) AS branch_requests
+    FROM dbo.dept_transactions_masked
+    GROUP BY PROC_BY_NAME
+) AS counts
 ORDER BY PROC_BY_NAME
 
 -- TURNAROUND TIME 
