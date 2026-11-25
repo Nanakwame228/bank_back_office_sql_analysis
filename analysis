@@ -35,7 +35,8 @@ SELECT
 FROM dbo.dept_transactions
 
 -- Transactions per employee (masked)
-SELECT PROC_BY_NAME AS Employee, COUNT(*) AS transactions_processed
+SELECT PROC_BY_NAME AS employee, COUNT(*) AS transactions_processed,
+	CAST(100.0 * COUNT(*) / SUM(COUNT(*)) OVER () AS DECIMAL(5,2)) AS pct_of_total
 FROM dbo.dept_transactions_masked
 GROUP BY PROC_BY_NAME
 ORDER BY transactions_processed DESC
