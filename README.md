@@ -11,7 +11,8 @@ I was asked to analyse all requests the department received in 2023. The analysi
 4. Requests submitted by bank branches vs. those submitted by the corporate team on behalf of corporate clients
 5. Requests processed per employee
 6. Corporate and branch requests processed per employee
-7. Turnaround time per product and per employee
+7. Turnaround time
+8. Turnaround time per product and per employee
 
 ## Tools
 SQL Server, SSMS
@@ -28,18 +29,12 @@ SQL Server, SSMS
 3. December received the most requests and this was due to companies paying Christmas and 13th month bonuses
 4. Total request received from the corporate team was 2593 and total received from branches were 4976
 5. Employee 1 and employee 5 contributed to 49.1% of total transactions processed in 2023 out of 6 employees
-6. 
-| Highest sent-back rates | Complaints and investigation products (~9–10%) vs. ~1% for standard salary products |
-| Corporate vs. branch | *fill in* |
-| Median turnaround | *fill in* |
-
-![Sent back by product](images/sent_back_by_product.png)
+6. Per my analysis employee 5 processed 55.92% of all corporate transactions in 2023. Transactions from Corporate entails more as employees have to transfer funds from the corporate account to the salary payment account and send the transaction for validation however this process is done by the branches before the request is presented.
+7. The median turn around time was 2.55 hours, I used to median because it is resilient to outliers which can be seen in this data, the mean turn around time is 7.06 hours and this is as a result of a few transactions which delayed due to some abnormal circumstances.
+8. Turn around time for majority of the products were centered around the median value with the exception of a few product which upon further investigation was reveled that employees simply did not like working on those products so it took longer to complete those requests.
+9. Employee 2 had a turnaround time of almost an hour below the turn around time, all the others were slightly above the median turn around time with Employee 6 and 3 having 3.03 hours and 3.09 hours respectively, which were the highest in the unit. 
 
 ## Limitations
-- Turnaround is measured in elapsed hours and includes weekends, nights and public holidays
-- Requests processed before they were created were excluded from turnaround figures
-- Small products (fewer than ~30 requests) have unreliable percentages
-- Single department, single year
+Turnaround is measured in elapsed hours and includes weekends, nights and public holidays
 
-## Files
-- `sql/analysis.sql`: all queries, with placeholder names
+
