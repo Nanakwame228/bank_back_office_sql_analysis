@@ -6,10 +6,12 @@ This project analyses the requests received and processed by a unit in a bank's 
 I was asked to analyse all requests the department received in 2023. The analysis requested was:
 
 1. Total requests received, total processed and total sent back (requests with issues are returned to the creator for correction)
-2. Requests submitted by bank branches vs. those submitted by the corporate team on behalf of corporate clients
-3. Requests processed per employee
-4. Corporate and branch requests processed per employee
-5. Turnaround time per product and per employee
+2. Total sent back per product
+3. Month on month request overview 
+4. Requests submitted by bank branches vs. those submitted by the corporate team on behalf of corporate clients
+5. Requests processed per employee
+6. Corporate and branch requests processed per employee
+7. Turnaround time per product and per employee
 
 ## Tools
 SQL Server, SSMS
@@ -22,7 +24,10 @@ SQL Server, SSMS
 
 ## Key findings
 1. A total of 7569 requests were received by the unit in 2023 and out of these 98.76% (7475) were processed and 1.24% (94) were sent back 
-2. 
+2. Out of all requests that were sent back internal salary requests had the most send backs with 40.43%
+3. December received the most requests and this was due to companies paying Christmas and 13th month bonuses
+4. Total request received from the corporate team was 2593 and total received from branches were 4976
+5. Employee 1 and employee 5 contributed to 49.1% of total transactions processed in 2023 out of 6 employees
 | Highest sent-back rates | Complaints and investigation products (~9–10%) vs. ~1% for standard salary products |
 | Corporate vs. branch | *fill in* |
 | Median turnaround | *fill in* |
